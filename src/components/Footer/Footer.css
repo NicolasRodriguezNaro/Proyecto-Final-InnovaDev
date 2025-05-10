@@ -1,0 +1,98 @@
+#footerPages{
+    background-color:  rgb(27,26,26);
+    width: 100%;
+    height: 67vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    gap: 10px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    overflow: hidden; 
+    z-index: 1;
+}
+#slogan{
+    font-size:large;
+}
+#devGits{
+    width: 30%;
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    
+}
+.linkIcon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 500;
+    color: white;
+}
+.iconFooter{
+    color: rgb(255, 255, 255);
+    font-size: 25px !important;
+    margin: 5px
+}
+
+.linkIcon:hover .iconFooter{
+    color: rgb(48, 114, 236);
+    font-size: 30px !important;
+}
+
+.logosFooter{
+    width: 100%;
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    gap: 30px;
+}
+.logoFooter{
+    width: 5%;
+    height: 90%;
+}
+
+.logoFooter:hover{
+    width: 6%;
+    height: 95%;
+}
+
+#iconRepository{
+    color: rgb(255, 255, 255);
+    font-size: 35px !important;
+}
+
+#iconRepository:hover{
+    color: rgb(13, 80, 203);
+    font-size: 40px !important;
+}
+
+#footerPages::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.226) 10%, transparent 11%) 0 0 / 20px 20px;
+    animation: moveBg 60s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes moveBg {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-33.3%, -33.3%);
+  }
+}
