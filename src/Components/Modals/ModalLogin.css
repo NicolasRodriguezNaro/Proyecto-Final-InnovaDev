@@ -1,4 +1,19 @@
 /* Fondo oscuro del modal */
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: white; /* bgcolor: 'background.paper' */
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 
+              0px 5px 8px 0px rgba(0,0,0,0.14), 
+              0px 1px 14px 0px rgba(0,0,0,0.12); /* boxShadow: 24 */
+  padding: 32px; /* p: 4 (4 * 8px = 32px) */
+  border-radius: 8px; /* borderRadius: 2 (2 * 4px = 8px) */
+}
+
+
 .modal-login-overlay {
     position: fixed;
     top: 0;
