@@ -109,13 +109,11 @@ const NavBar = () => {
           className="formProfileBackGround"
           onClick={() => setFormsProfile(null)}
         >
-          {" "}
           {/* El setFormsProfile(null) hace que el fondo negro se cierre al hacer click sobre el  */}
           <div
             className="formProfileContent"
             onClick={(e) => e.stopPropagation()}
           >
-            {" "}
             {/* El stopPropagation evita que el fondo y el contenedor de el login o el register se cierren al hacer click sobre el contenedor blanco  */}
             {formsProfile === "login" ? (
               <div>
