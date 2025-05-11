@@ -34,7 +34,7 @@
     content: "";
     position: absolute;
     height: 30%;
-    width: 120%;
+    width: 140%;
     
 } 
 .aboutInfo:hover::before{
