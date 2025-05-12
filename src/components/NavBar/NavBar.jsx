@@ -3,13 +3,12 @@ import "./NavBar.css";
 
 const NavBar = ({ openLogin, openRegister }) => {
   const [indicatorPos, setIndicatorPos] = useState(0);
+  const buttonRefs = useRef([]);
   const [showProfile, setProfile] = useState(false);
   const profileRef = useRef(null);
   const [formsProfile, setFormsProfile] = useState(null);
-
-  const handleHover = (pos) => {
-    setIndicatorPos(pos);
-  };
+  const [indicatorWidth, setIndicatorWidth] = useState(0);
+  
 
   const toggleProfileMenu = () => {
     setProfile((prev) => !prev);
@@ -27,6 +26,16 @@ const NavBar = ({ openLogin, openRegister }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleHover = (index) => {
+    if (buttonRefs.current[index]) {
+      const rect = buttonRefs.current[index].getBoundingClientRect();
+      const parentRect =
+      buttonRefs.current[0].parentElement.getBoundingClientRect();
+      setIndicatorPos(rect.left - parentRect.left);
+      setIndicatorWidth(rect.width);
+    }
+  };
+
   return (
     <>
       <div id="nav">
@@ -37,6 +46,7 @@ const NavBar = ({ openLogin, openRegister }) => {
 
         <div id="navButtons">
           <a
+            ref={(el) => (buttonRefs.current[0] = el)}
             className="buttonsNavBar"
             href="/"
             onMouseEnter={() => handleHover(0)}
@@ -44,28 +54,28 @@ const NavBar = ({ openLogin, openRegister }) => {
             INICIO
           </a>
           <a
+            ref={(el) => (buttonRefs.current[1] = el)}
             className="buttonsNavBar"
             href="/projects"
-            onMouseEnter={() => handleHover(135)}
+            onMouseEnter={() => handleHover(1)}
           >
             PROYECTOS
           </a>
           <a
+            ref={(el) => (buttonRefs.current[2] = el)}
             className="buttonsNavBar"
             href="/about"
-            onMouseEnter={() => handleHover(290)}
+            onMouseEnter={() => handleHover(2)}
           >
             ACERCA DE
           </a>
-          <div
-            className="profileWrapper"
-            ref={profileRef}
-            onMouseEnter={() => handleHover(426)}
-          >
+
+          <div className="profileWrapper" ref={profileRef}>
             <a
+              ref={(el) => (buttonRefs.current[3] = el)}
               className="buttonsNavBar"
               href=""
-              onMouseEnter={() => handleHover(426)}
+              onMouseEnter={() => handleHover(3)}
               onClick={(e) => {
                 e.preventDefault(); // evita recargar la página
                 toggleProfileMenu(); // abre o cierra el menú
@@ -102,7 +112,7 @@ const NavBar = ({ openLogin, openRegister }) => {
 
           <div
             className="indicatorNav"
-            style={{ left: `${indicatorPos}px` }}
+            style={{ left: `${indicatorPos}px`, width: `${indicatorWidth}px` }}
           ></div>
         </div>
       </div>
