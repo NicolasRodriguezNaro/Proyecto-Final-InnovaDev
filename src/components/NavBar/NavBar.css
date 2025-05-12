@@ -1,0 +1,119 @@
+#nav{
+    background-color: rgb(13, 80, 203);
+    width: 100%;
+    height: 12vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    padding-right: 25px;
+}
+#Logo{
+    background-color: rgb(13, 80, 203);
+    height: 100%;
+    width: 22%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#logoNav{
+    width: 20%;
+    height: 75%;
+    padding: auto;
+}
+#titleLogo{
+    color: white;
+    height: 100%;
+    margin-top: 18%;
+}
+#navButtons{
+    background-color:rgb(255, 255, 255);
+    position: relative;
+    width: 37%;
+    height: 70%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+.buttonsNavBar{
+    height: auto;
+    width: auto;
+    position: relative;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: 600;
+    color: black;
+    text-decoration: none;
+    padding: 0 30px;
+    z-index: 1;
+}
+#navButtons .indicatorNav{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 125px;
+    height: 100%;
+    background-color: darkgrey;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+
+/*  */
+.profileWrapper {
+  position: relative;
+}
+
+.profileMenu {
+    margin-top: 35px;
+    right: 0;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.profileMenu a {
+  padding: 8px 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  border-radius: 5px;
+}
+
+.profileMenu a:hover {
+  background-color: #a1a1a1;
+}
+
+/* Tengo esta linea de codigo por que me ayuda a guiarme a la hora de hacer otras piezas con css no la borren!!! */
+.formProfileBackGround {
+  position: fixed;  /* Se queda fijo en la pantalla */
+  top: 0;  /* Empieza desde la parte superior */
+  left: 0;  /* Empieza desde el lado izquierdo */
+  width: 100%;  /* Ocupa toda la pantalla */
+  height: 100%;  /* Ocupa toda la altura de la pantalla */
+  background-color: rgba(0, 0, 0, 0.5);  /* Fondo oscuro con opacidad */
+  display: flex;  /* Utiliza flexbox para centrar el modal */
+  justify-content: center;  /* Centra horizontalmente */
+  align-items: center;  /* Centra verticalmente */
+  z-index: 999;  /* Asegura que el modal esté por encima de todo */
+}
+.formProfileContent{
+    background-color: #fff;
+    width: 600px;
+    height: 600px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+

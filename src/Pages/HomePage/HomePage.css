@@ -1,0 +1,82 @@
+#homeBackGround{
+    background-color: rgb(249, 252, 255);
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.boxBackGround{
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 55vh;
+    position: relative; 
+    overflow: hidden;
+}
+.boxBackGround::before{
+    content: "";
+    position: absolute;
+    height: 200px;
+    width: 1450px;
+    z-index: 0;
+}
+.boxBackGround:hover::before{
+    background-image:conic-gradient(rgb(1, 98, 252) 20deg);
+    animation: rotar 10s linear infinite;
+}
+
+@keyframes rotar {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+.containerInfo{
+    background-color:rgb(255, 255, 255);
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    height: 94%;
+    z-index: 1;
+    padding: 30px;
+    gap: 10px;
+}
+
+.imageBackGround{
+    background-color: rgb(40, 51, 148);
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.imageHome{
+    width: 97%;
+    height: 97%;
+}
+.infoBox{
+    background-color:  rgb(40, 51, 148);
+    color: white;
+    width: 70%;
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+    text-align: justify;
+}
+.paragraphHome{
+    font-size:larger;
+    margin-top: 15px;
+}
+#containerInfo2{
+    flex-direction: row-reverse;
+}
