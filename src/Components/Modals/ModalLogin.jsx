@@ -70,14 +70,79 @@ const ModalLogin = ({ isOpen, onClose }) => {
             required
             fullWidth
           />
+
           <Button
             type="submit"
             variant="contained"
             fullWidth
-            sx={{ mt: 2, backgroundColor:  'rgb(13, 80, 203)' }}
+            sx={{ mt: 0.5, backgroundColor:  'rgb(13, 80, 203)' }}
           >
-            Ingresar
+            Iniciar
           </Button>
+
+
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              justifyContent: 'flex-end', // Alinea a la derecha
+              mt: -1, // Margen superior pequeño
+            }}
+          >
+            <Typography
+              component="a" // Lo convierte en enlace (<a>)
+              href="#"     // Reemplaza "#" con tu ruta (ej: "/forgot-password")
+              variant="body2" // Tamaño pequeño
+              sx={{
+                color: 'primary.main', // Color discreto
+                cursor: 'pointer',
+                textDecoration: 'none', // Sin subrayado por defecto
+                '&:hover': {
+                  textDecoration: 'underline', // Subrayado al hover
+                },
+                fontSize: '0.875rem', // Tamaño más pequeño
+              }}
+            >
+              ¿Olvidaste tu contraseña?
+            </Typography>
+          </Box>
+
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              gap: 0.5, // Espacio entre los textos
+              mb: -1, // Margen inferior
+            }}
+          >
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                fontWeight: 600,
+                fontSize: '0.8rem'
+              }}
+            >
+              ¿No tienes cuenta?
+            </Typography>
+            
+            <Typography 
+              component="a" // Lo convierte en enlace (<a>)
+              href="#"      // O la ruta de tu login (ej: "/login")
+              variant="body2" 
+              sx={{ 
+                fontWeight: 600,
+                fontSize: '0.8rem',
+                color: 'primary.main',
+                cursor: 'pointer',
+                textDecoration: 'none', // Quita el subrayado por defecto
+                '&:hover': {
+                  textDecoration: 'underline', // Subrayado al hover
+                }
+              }}
+            >
+              Registrate
+            </Typography>
+          </Box>          
         </Box>
       </Box>
     </Modal>

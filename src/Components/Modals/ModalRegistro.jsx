@@ -125,7 +125,7 @@ const ModalRegistro = ({ isOpen, onClose }) => {
             type="email"
             label="Correo electrónico"
             variant="outlined"
-            required={false}
+            required
             fullWidth
             sx={{mb: -1 }}
           />
@@ -199,13 +199,21 @@ const ModalRegistro = ({ isOpen, onClose }) => {
             Registrarse
           </Button>
           
-          <Divider sx={{ my: 0.5, fontSize: '0.75rem', mb: -1 }}>o registrarse con</Divider>
+          <Divider sx={{ my: 0.5,
+            borderBottomWidth: 2,
+            borderColor: 'rgb(8, 9, 10)',
+            fontSize: '0.9rem', mb: -1,
+              '&::before, &::after': {
+            borderColor: 'rgb(147, 149, 151)',
+            borderTopWidth: 3,
+          }
+           }}>O registrarse con</Divider>
           
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'center', 
             gap: 1,
-            mb: -2
+            mb: -1
           }}>
             <IconButton size="small" color="primary" aria-label="Google">
               <GoogleIcon fontSize="small" />
@@ -220,21 +228,43 @@ const ModalRegistro = ({ isOpen, onClose }) => {
               <LinkedInIcon fontSize="small" />
             </IconButton>
           </Box>
-          
-          <Typography 
-            variant="body2" 
+          <Box 
             sx={{ 
-              textAlign: 'center', 
-              mt: 1,
-              color: 'primary.main',
-              cursor: 'pointer',
-              '&:hover': {
-                textDecoration: 'underline'
-              }
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              gap: 0.5, // Espacio entre los textos
+              mb: -1, // Margen inferior
             }}
           >
-            ¿Olvidaste tu contraseña?
-          </Typography>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                fontWeight: 600,
+                fontSize: '0.8rem'
+              }}
+            >
+              ¿Ya tienes una cuenta?
+            </Typography>
+            
+            <Typography 
+              component="a" // Lo convierte en enlace (<a>)
+              href="#"      // O la ruta de tu login (ej: "/login")
+              variant="body2" 
+              sx={{ 
+                fontWeight: 600,
+                fontSize: '0.8rem',
+                color: 'primary.main',
+                cursor: 'pointer',
+                textDecoration: 'none', // Quita el subrayado por defecto
+                '&:hover': {
+                  textDecoration: 'underline', // Subrayado al hover
+                }
+              }}
+            >
+              Iniciar sesión
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Modal>
