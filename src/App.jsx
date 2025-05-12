@@ -24,7 +24,9 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <NavBar />
+        <NavBar 
+          openLogin={() => setLoginModalOpen(true)} 
+          openRegister={() => setRegisterModalOpen(true)} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<ProjectPage />} />
