@@ -1,13 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./NavBar.css";
-const NavBar = () => {
+const NavBar = ({ openLogin, openRegister }) => {
   const [indicatorPos, setIndicatorPos] = useState(0);
   const buttonRefs = useRef([]);
   const [showProfile, setProfile] = useState(false);
   const profileRef = useRef(null);
-  const [formsProfile, setFormsProfile] = useState(null);
   const [indicatorWidth, setIndicatorWidth] = useState(0);
-  
 
   const toggleProfileMenu = () => {
     setProfile((prev) => !prev);
@@ -29,7 +27,7 @@ const NavBar = () => {
     if (buttonRefs.current[index]) {
       const rect = buttonRefs.current[index].getBoundingClientRect();
       const parentRect =
-      buttonRefs.current[0].parentElement.getBoundingClientRect();
+        buttonRefs.current[0].parentElement.getBoundingClientRect();
       setIndicatorPos(rect.left - parentRect.left);
       setIndicatorWidth(rect.width);
     }
@@ -89,7 +87,8 @@ const NavBar = () => {
                   href=""
                   onClick={(e) => {
                     e.preventDefault();
-                    setFormsProfile("login");
+                    openLogin();
+                    setProfile(false);
                   }}
                 >
                   Iniciar Sesión
@@ -98,7 +97,8 @@ const NavBar = () => {
                   href=""
                   onClick={(e) => {
                     e.preventDefault();
-                    setFormsProfile("register");
+                    openRegister();
+                    setProfile(false);
                   }}
                 >
                   Registrarse
@@ -113,30 +113,6 @@ const NavBar = () => {
           ></div>
         </div>
       </div>
-
-      {formsProfile && (
-        <div
-          className="formProfileBackGround"
-          onClick={() => setFormsProfile(null)}
-        >
-          {/* El setFormsProfile(null) hace que el fondo negro se cierre al hacer click sobre el  */}
-          <div
-            className="formProfileContent"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* El stopPropagation evita que el fondo y el contenedor de el login o el register se cierren al hacer click sobre el contenedor blanco  */}
-            {formsProfile === "login" ? (
-              <div>
-                <h2>Formulario de Iniciar Sesión</h2>
-              </div>
-            ) : (
-              <div>
-                <h2>Formulario de Registro</h2>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 };
