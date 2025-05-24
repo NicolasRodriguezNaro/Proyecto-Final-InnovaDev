@@ -72,9 +72,10 @@
     font-family: 'Poppins', sans-serif;
     padding: 20px;
     text-align: justify;
+    overflow: hidden;
 }
 .paragraphHome{
-    font-size:larger;
+    font-size:100%;
     margin-top: 15px;
 }
 #containerInfo2{

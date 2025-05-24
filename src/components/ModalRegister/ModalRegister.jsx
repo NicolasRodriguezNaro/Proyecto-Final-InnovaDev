@@ -1,5 +1,5 @@
 import React from 'react';
-import './Modals.css';
+import './ModalRegister.css';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -20,7 +20,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
-const ModalRegistro = ({ isOpen, onClose }) => {
+const ModalRegister = ({ isOpen, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -272,4 +272,4 @@ const ModalRegistro = ({ isOpen, onClose }) => {
   )
 }
 
-export default ModalRegistro
+export default ModalRegister;
