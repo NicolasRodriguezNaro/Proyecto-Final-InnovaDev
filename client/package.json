@@ -14,10 +14,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
-<<<<<<< HEAD:package.json
-=======
     "axios": "^1.9.0",
->>>>>>> 6f3abc892e11bec6577c55622f41e5433888ec11:client/package.json
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0"
