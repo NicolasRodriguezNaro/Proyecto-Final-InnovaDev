@@ -7,6 +7,7 @@ const NavBar = ({ openLogin, openRegister }) => {
   const [showProfile, setProfile] = useState(false);
   const profileRef = useRef(null);
   const [indicatorWidth, setIndicatorWidth] = useState(0);
+  const [usuario, setUsuario] = useState(null);
 
   const toggleProfileMenu = () => {
     setProfile((prev) => !prev);
@@ -20,8 +21,20 @@ const NavBar = ({ openLogin, openRegister }) => {
       }
     };
 
+    try {
+      const storedUsuario = localStorage.getItem("usuario");
+      if (storedUsuario && storedUsuario !== "undefined" && storedUsuario !== "null") {
+        const parsedUsuario = JSON.parse(storedUsuario);
+        setUsuario(parsedUsuario);
+      }
+    } catch (error) {
+      console.error("Error al parsear usuario del localStorage:", error);
+      localStorage.removeItem("usuario"); // limpia si está corrupto
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+
   }, []);
 
   const handleHover = (index) => {
@@ -84,26 +97,44 @@ const NavBar = ({ openLogin, openRegister }) => {
 
             {showProfile && (
               <div className="profileMenu">
-                <a
-                  href=""
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openLogin();
-                    setProfile(false);
-                  }}
-                >
-                  Iniciar Sesión
-                </a>
-                <a
-                  href=""
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openRegister();
-                    setProfile(false);
-                  }}
-                >
-                  Registrarse
-                </a>
+              {usuario ? (
+                <>
+                  <span>{usuario.nombre}</span>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("usuario");
+                      setUsuario(null); // actualiza el estado
+                      setProfile(false);
+                      window.location.href = "/"; // redirige al inicio
+                    }}
+                  >
+                    Cerrar sesión
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openLogin();
+                      setProfile(false);
+                    }}
+                  >
+                    Iniciar Sesión
+                  </a>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openRegister();
+                      setProfile(false);
+                    }}
+                  >
+                    Registrarse
+                  </a>
+                </>
+              )}              
               </div>
             )}
           </div>
