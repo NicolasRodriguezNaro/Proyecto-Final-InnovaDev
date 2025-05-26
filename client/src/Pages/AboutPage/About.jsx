@@ -23,7 +23,7 @@ const About = () => {
                 modernas como HTML5, CSS y React con componentes funcionales. Se
                 utilizó MUI para incorporar componentes visuales que mejoran la
                 experiencia del usuario y el diseño de la interfaz. Además, se
-                empleó Firebase como base de datos para almacenar la información
+                empleó Mongo Atlas como base de datos para almacenar la información
                 relacionada con las cuentas de coordinadores, estudiantes,
                 docentes y los proyectos. También se implementaron los hooks
                 useState y useEffect para gestionar el estado de la aplicación y
