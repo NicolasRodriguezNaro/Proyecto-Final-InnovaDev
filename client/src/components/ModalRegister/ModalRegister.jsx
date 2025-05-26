@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ModalRegister.css';
 
 import Modal from '@mui/material/Modal';
@@ -20,13 +21,88 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
-const ModalRegister = ({ isOpen, onClose }) => {
+const ModalRegister = ({ isOpen, onClose, openLogin }) => {
+  const [tipoUsuario, setTipoUsuario] = useState(''); // estado para el tipo de usuario
+  const [grado, setGrado] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [contraseña, setContraseña] = useState('');
+  const [repetirContraseña, setRepetirContraseña] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [institucion, setInstitucion] = useState('');
+  const [identificacion, setIdentificacion] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Registro enviado");
-    onClose();
+  const navigate = useNavigate();
+
+  const handleTipoUsuarioChange = (event) => {
+    setTipoUsuario(event.target.value);
   };
+
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (contraseña !== repetirContraseña) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/autenticacion/registro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre,
+          apellido,
+          identificacion,
+          correo,
+          contraseña,
+          rol: tipoUsuario,
+          telefono,
+          fecha_nacimiento: fechaNacimiento,
+          institucion,
+          grado_escolar: tipoUsuario === 'estudiante' ? grado : null,
+          activo: true,
+        }),
+      });
+
+    const data = await response.json();
+    console.log('Respuesta backend:', data);
+
+    if (!response.ok) {
+      alert(data.mensaje || 'Error al registrar usuario');
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+    if (data.usuario.rol === "estudiante") {
+      navigate("/StudentProfile");
+    } else if (data.usuario.rol === "docente") {
+      navigate("/");
+    } else if (data.usuario.rol == "coordinador") {
+      navigate("/");
+    } else{
+      navigate("/");
+    }
+
+    window.location.reload(); 
+
+    onClose();
+
+      onClose(); // cerrar el modal
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Hubo un error al registrar el usuario');
+    }
+  };
+
+
+
+
 
   return (
         <Modal
@@ -42,11 +118,9 @@ const ModalRegister = ({ isOpen, onClose }) => {
         width: '90%',
         maxWidth: 450,
         bgcolor: 'background.paper',
-        boxShadow: 24,
+        boxShadow: 22,
         p: 3,
         borderRadius: 2,
-        maxHeight: '90vh',
-        overflowY: 'auto',
         '&:focus-visible': {
           outline: 'none'
         }
@@ -92,6 +166,8 @@ const ModalRegister = ({ isOpen, onClose }) => {
               labelId="tipo-usuario-label"
               id="tipo-usuario"
               label="Tipo de usuario"
+              value={tipoUsuario}
+              onChange={handleTipoUsuarioChange}
             >
               <MenuItem value="estudiante">Estudiante</MenuItem>
               <MenuItem value="docente">Docente</MenuItem>
@@ -105,6 +181,8 @@ const ModalRegister = ({ isOpen, onClose }) => {
               size="small"
               margin="dense"
               label="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
               variant="outlined"
               required
               fullWidth
@@ -113,6 +191,8 @@ const ModalRegister = ({ isOpen, onClose }) => {
               size="small"
               margin="dense"
               label="Apellido"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
               variant="outlined"
               required
               fullWidth
@@ -124,6 +204,8 @@ const ModalRegister = ({ isOpen, onClose }) => {
             margin="dense"
             type="email"
             label="Correo electrónico"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
             variant="outlined"
             required
             fullWidth
@@ -131,12 +213,14 @@ const ModalRegister = ({ isOpen, onClose }) => {
           />
           
           {/* Contraseña y Repetir contraseña en una fila */}
-          <Box sx={{ display: 'flex', gap: 1.5, mb: -1 }}>
+          <Box sx={{ display: 'flex', gap: 1.5, mb: -1.8 }}>
             <TextField
               size="small"
               margin="dense"
               type="password"
               label="Contraseña"
+              value={contraseña}
+              onChange={(e) => setContraseña(e.target.value)}
               variant="outlined"
               required
               fullWidth
@@ -146,6 +230,8 @@ const ModalRegister = ({ isOpen, onClose }) => {
               margin="dense"
               type="password"
               label="Repetir contraseña"
+              value={repetirContraseña}
+              onChange={(e) => setRepetirContraseña(e.target.value)}
               variant="outlined"
               required
               fullWidth
@@ -159,28 +245,90 @@ const ModalRegister = ({ isOpen, onClose }) => {
               margin="dense"
               type="tel"
               label="Teléfono"
+              value={telefono}
+              onChange={(e) => setTelefono(e.target.value)}
               variant="outlined"
               required
               fullWidth
-              inputProps={{ pattern: "[0-9]{10}", maxLength: 10 }}
+              inputProps={{ inputMode: 'numeric',
+                pattern: '[0-9]*',
+                 maxLength: 10
+                }}
+
+              onInput={(e) => {
+              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
             />
             <TextField
               size="small"
               margin="dense"
               type="date"
               label="Fecha de nacimiento"
+              value={fechaNacimiento}
+              onChange={(e) => setFechaNacimiento(e.target.value)}
               variant="outlined"
               required={false}
               fullWidth
               InputLabelProps={{ shrink: true }}
             />
           </Box>
+
+            <TextField
+              size="small"
+              margin="dense"
+              label="Institución"
+              value={institucion}
+              onChange={(e) => setInstitucion(e.target.value)}
+              variant="outlined"
+              required
+              fullWidth
+              sx={{mb: -1.5 }}
+            />
+
+          <Box sx={{ display: 'flex', gap: 1.5, mb: -1 }}>
+            <TextField
+              size="small"
+              margin="dense"
+              label="No. identificación"
+              value={identificacion}
+              onChange={(e) => setIdentificacion(e.target.value)}
+              variant="outlined"
+              required
+              fullWidth
+              inputProps={{
+                inputMode: 'numeric', 
+                pattern: '[0-9]*',    // Valida solo números
+                maxLength: 12        
+              }}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
+            />
+
+          {tipoUsuario === 'estudiante' && (
+            <FormControl fullWidth size="small" margin="dense">
+              <InputLabel id="grado-label">Grado</InputLabel>
+              <Select
+                labelId="grado-label"
+                id="grado"
+                value={grado}
+                onChange={(e) => setGrado(e.target.value)}
+                label="Grado"
+              >
+                {['Sexto', 'Séptimo', 'Octavo', 'Noveno', 'Décimo', 'Undécimo'].map((g, i) => (
+                  <MenuItem key={i} value={g}>{g}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          </Box>
           
           <FormControlLabel
             control={<Checkbox size="small" required={false} />}
             label="Acepto los términos y condiciones"
             sx={{ 
-                mt: 0.3, 
+                mt: 0.1, 
                 mb: -2,
                 '& .MuiFormControlLabel-label': {
                   fontSize: '0.75rem'
@@ -249,7 +397,7 @@ const ModalRegister = ({ isOpen, onClose }) => {
             
             <Typography 
               component="a" // Lo convierte en enlace (<a>)
-              href="#"      // O la ruta de tu login (ej: "/login")
+              onClick={openLogin}    // O la ruta de tu login (ej: "/login")
               variant="body2" 
               sx={{ 
                 fontWeight: 600,

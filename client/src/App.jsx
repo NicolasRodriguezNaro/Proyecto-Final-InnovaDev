@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-import NavBar from "./components/NavBar/NavBar";
-import Footer from "./components/Footer/Footer";
+import NavBar from "./Components/NavBar/NavBar";
+import Footer from "./Components/Footer/Footer";
 
 import HomePage from "./Pages/HomePage/HomePage";
 import AboutPage from "./Pages/AboutPage/About";
@@ -15,9 +15,11 @@ import ModalLogin from "./components/ModalLogin/ModalLogin";
 import ModalRegister from "./components/ModalRegister/ModalRegister";
 import TeacherPage from "./Pages/TeacherPage/TeacherPage";
 
+
 const App = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  
 
   return (
     <>
@@ -35,20 +37,28 @@ const App = () => {
           <Route path="/ProjectDetails" element={<ProjectDetails />} />
 
         </Routes>
-        <Footer />
-      </BrowserRouter>
-
       <ModalRegister
         isOpen={isRegisterModalOpen}
         onClose={() => setRegisterModalOpen(false)}
-      />
+        openLogin={() => {
+          setRegisterModalOpen(false);
+          setLoginModalOpen(true);
+        }}
+        />
       
       <ModalLogin
         isOpen={isLoginModalOpen}
         onClose={() => setLoginModalOpen(false)}
-      />
+        openRegister={() => {
+          setLoginModalOpen(false);
+          setRegisterModalOpen(true);
+        }}
+        />
+        <Footer />
+      </BrowserRouter>
+
     </>
-  );
-};
+  )
+}
 
 export default App;

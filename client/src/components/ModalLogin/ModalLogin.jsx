@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ModalLogin.css";
 
 import Modal from "@mui/material/Modal";
@@ -9,11 +10,54 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-const ModalLogin = ({ isOpen, onClose }) => {
-  const handleSubmit = (e) => {
+const ModalLogin = ({ isOpen, onClose, openRegister }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Inicio de sesión enviado");
-    onClose();
+
+    try {
+      const response = await fetch("http://localhost:5000/api/autenticacion/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ correo: email, contraseña: password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.mensaje || "Error al iniciar sesión");
+      }
+
+      const data = await response.json();
+      console.log('Respuesta backend:', data);
+
+      //Guardar token y datos del usuario en localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+
+      // Redirigir según el rol del usuario
+      if (data.usuario.rol === "estudiante") {
+        navigate("/StudentProfile");
+      } else if (data.usuario.rol === "docente") {
+        navigate("/");
+      } else if (data.usuario.rol == "coordinador") {
+        navigate("/");
+      } else{
+        navigate("/");
+      }
+
+      window.location.reload(); 
+
+      onClose(); // Cierra el modal
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error.message);
+      alert(error.message);
+    }
   };
 
   return (
@@ -53,6 +97,8 @@ const ModalLogin = ({ isOpen, onClose }) => {
           <TextField
             type="email"
             label="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
             required
             fullWidth
@@ -60,6 +106,8 @@ const ModalLogin = ({ isOpen, onClose }) => {
           <TextField
             type="password"
             label="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             variant="outlined"
             required
             fullWidth
@@ -120,7 +168,7 @@ const ModalLogin = ({ isOpen, onClose }) => {
 
             <Typography
               component="a" // Lo convierte en enlace (<a>)
-              href="#" // O la ruta de tu login (ej: "/login")
+              onClick={openRegister}  // O la ruta de tu login (ej: "/login")
               variant="body2"
               sx={{
                 fontWeight: 600,

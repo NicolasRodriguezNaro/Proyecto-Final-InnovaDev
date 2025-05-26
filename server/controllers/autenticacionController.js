@@ -30,12 +30,33 @@ export const registrar = async (req, res) => {
     const nuevoUsuario = new Usuario(datosUsuario);
     await nuevoUsuario.save();
 
-    res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
+
+    const token = jwt.sign(
+      { id: nuevoUsuario._id, rol: nuevoUsuario.rol }, 
+      process.env.JWT_TOKEN_SECRET, 
+      { expiresIn: '1d' }
+    );
+
+    // Envía token y datos básicos del usuario al frontend
+    res.status(201).json({
+      token,
+      usuario: {
+        id: nuevoUsuario._id,
+        nombre: nuevoUsuario.nombre,
+        rol: nuevoUsuario.rol,
+      }, 
+      mensaje: 'Usuario registrado correctamente'
+    });
+
+
   } catch (err) {
     res.status(500).json({ mensaje: 'Error en el registro' });
   }
 };
 
+
+
+//Login
 export const login = async (req, res) => {
   const { correo, contraseña } = req.body;
 
