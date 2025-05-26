@@ -1,13 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./NavBar.css";
-<<<<<<< HEAD
-<<<<<<< HEAD:src/components/NavBar/NavBar.jsx
 
-=======
->>>>>>> 6f3abc892e11bec6577c55622f41e5433888ec11:client/src/components/NavBar/NavBar.jsx
-=======
-
->>>>>>> loginpage
 const NavBar = ({ openLogin, openRegister }) => {
   const [indicatorPos, setIndicatorPos] = useState(0);
   const buttonRefs = useRef([]);
@@ -104,38 +97,6 @@ const NavBar = ({ openLogin, openRegister }) => {
 
             {showProfile && (
               <div className="profileMenu">
-<<<<<<< HEAD
-                <a
-                  href=""
-                  onClick={(e) => {
-                    e.preventDefault();
-<<<<<<< HEAD:src/components/NavBar/NavBar.jsx
-                  openLogin();  // Abre el modal de Login
-                  setProfile(false); //cierra modal login
-=======
-                    openLogin();
-                    setProfile(false);
->>>>>>> 6f3abc892e11bec6577c55622f41e5433888ec11:client/src/components/NavBar/NavBar.jsx
-                  }}
-                >
-                  Iniciar Sesión
-                </a>
-                <a
-                  href=""
-                  onClick={(e) => {
-                    e.preventDefault();
-<<<<<<< HEAD:src/components/NavBar/NavBar.jsx
-                  openRegister();  // Abre el modal de Registro
-                  setProfile(false);// cierra modal
-=======
-                    openRegister();
-                    setProfile(false);
->>>>>>> 6f3abc892e11bec6577c55622f41e5433888ec11:client/src/components/NavBar/NavBar.jsx
-                  }}
-                >
-                  Registrarse
-                </a>
-=======
               {usuario ? (
                 <>
                   <span>{usuario.nombre}</span>
@@ -174,24 +135,15 @@ const NavBar = ({ openLogin, openRegister }) => {
                   </a>
                 </>
               )}              
->>>>>>> loginpage
               </div>
             )}
           </div>
-
           <div
             className="indicatorNav"
             style={{ left: `${indicatorPos}px`, width: `${indicatorWidth}px` }}
           ></div>
         </div>
       </div>
-<<<<<<< HEAD
-<<<<<<< HEAD:src/components/NavBar/NavBar.jsx
-
-=======
->>>>>>> 6f3abc892e11bec6577c55622f41e5433888ec11:client/src/components/NavBar/NavBar.jsx
-=======
->>>>>>> loginpage
     </>
   );
 };

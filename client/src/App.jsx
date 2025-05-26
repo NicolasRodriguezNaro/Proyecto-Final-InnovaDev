@@ -14,6 +14,10 @@ import ProjectDetails from "./Pages/ProjectDetails/ProjectDetails";
 import ModalLogin from "./components/ModalLogin/ModalLogin";
 import ModalRegister from "./components/ModalRegister/ModalRegister";
 
+import PageCoordinadorHome from "./Pages/PageCoordinador/PageCoordinadorHome/PageCoordinadorHome";
+import PageGestionUsers from "./Pages/PageCoordinador/PageGestionUsers/PageGestionUsers";
+import PageGestionProjects from "./Pages/PageCoordinador/PageGestionProjects/PageGestionProjects";
+
 
 const App = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -33,6 +37,9 @@ const App = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/StudentProfile" element={<StudentPage />} />
           <Route path="/ProjectDetails" element={<ProjectDetails />} />
+          <Route path="/PageCoordinador" element={<PageCoordinadorHome />} />
+          <Route path="/PageCoordinador/gestionUsers" element={<PageGestionUsers />} />
+          <Route path="/PageCoordinador/gestionProjects" element={<PageGestionProjects />} />
 
           {/* <Route path="*" element={<ErrorPage />} /> */}
         </Routes>
