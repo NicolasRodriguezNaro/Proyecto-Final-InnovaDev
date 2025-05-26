@@ -32,7 +32,7 @@ export const registrar = async (req, res) => {
 
 
     const token = jwt.sign(
-      { id: nuevoUsuario._id, rol: nuevoUsuario.rol }, 
+      { id: nuevoUsuario._1d, rol: nuevoUsuario.rol }, 
       process.env.JWT_TOKEN_SECRET, 
       { expiresIn: '1d' }
     );
@@ -41,9 +41,16 @@ export const registrar = async (req, res) => {
     res.status(201).json({
       token,
       usuario: {
-        id: nuevoUsuario._id,
+        id: nuevoUsuario._1d,
         nombre: nuevoUsuario.nombre,
+        apellido: nuevoUsuario.apellido,
+        identificacion: nuevoUsuario.identificacion,
+        correo: nuevoUsuario.correo,
         rol: nuevoUsuario.rol,
+        telefono: nuevoUsuario.telefono,
+        fecha_nacimiento: nuevoUsuario.fecha_nacimiento,
+        institucion: nuevoUsuario.institucion,
+        ...(nuevoUsuario.grado_escolar && { grado_escolar: nuevoUsuario.grado_escolar }) 
       }, 
       mensaje: 'Usuario registrado correctamente'
     });
@@ -68,10 +75,27 @@ export const login = async (req, res) => {
     const valido = await bcrypt.compare(contraseña, usuario.contraseña);
     if (!valido) return res.status(401).json({ mensaje: 'Contraseña incorrecta' });
 
-    const token = jwt.sign({ id: usuario._id, rol: usuario.rol }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ id: usuario._1d, rol: usuario.rol }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1d' });
 
-    res.json({ token, usuario: { id: usuario._id, nombre: usuario.nombre, rol: usuario.rol } });
+    res.json({ 
+      token,
+      usuario: {
+          id: usuario._1d,
+          nombre: usuario.nombre,
+          apellido: usuario.apellido,
+          identificacion: usuario.identificacion,
+          correo: usuario.correo,
+          rol: usuario.rol,
+          telefono: usuario.telefono,
+          fecha_nacimiento: usuario.fecha_nacimiento,
+          institucion: usuario.institucion,
+          ...(usuario.grado_escolar && { grado_escolar: usuario.grado_escolar }) 
+        }
+    });
   } catch (err) {
     res.status(500).json({ mensaje: 'Error al iniciar sesión' });
   }
 };
+
+
+

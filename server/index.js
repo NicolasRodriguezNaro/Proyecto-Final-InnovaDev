@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import autenticacionRoutes from './routes/auntenticacionRoutes.js';
 import proyectoRoutes from './routes/proyectoRoutes.js';
 import avanceRoutes from './routes/avanceRoutes.js';
+import usuarioRoutes from './routes/usuarioRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,9 @@ app.use(express.json());
 app.use('/api/autenticacion', autenticacionRoutes);
 app.use('/api/proyectos', proyectoRoutes);
 app.use('/api/avances', avanceRoutes);
+app.use('/api/actualizar', usuarioRoutes);
+app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/eliminar", usuarioRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
