@@ -13,7 +13,7 @@ const usuarioSchema = new mongoose.Schema(
         "grado_escolar": {
             type: String,
             required: function() {
-                return this.role === 'student';
+                return this.role === 'estudiante';
             }
         },
         "institucion": {type: String, required: true},

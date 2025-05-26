@@ -84,7 +84,7 @@ const ModalRegister = ({ isOpen, onClose, openLogin }) => {
     } else if (data.usuario.rol === "docente") {
       navigate("/");
     } else if (data.usuario.rol == "coordinador") {
-      navigate("/");
+      navigate("/PageCoordinador");
     } else{
       navigate("/");
     }

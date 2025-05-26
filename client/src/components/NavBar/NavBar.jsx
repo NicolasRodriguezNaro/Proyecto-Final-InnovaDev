@@ -138,7 +138,6 @@ const NavBar = ({ openLogin, openRegister }) => {
               </div>
             )}
           </div>
-
           <div
             className="indicatorNav"
             style={{ left: `${indicatorPos}px`, width: `${indicatorWidth}px` }}
