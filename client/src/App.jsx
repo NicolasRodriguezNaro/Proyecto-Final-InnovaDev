@@ -13,6 +13,7 @@ import ProjectDetails from "./Pages/ProjectDetails/ProjectDetails";
 
 import ModalLogin from "./components/ModalLogin/ModalLogin";
 import ModalRegister from "./components/ModalRegister/ModalRegister";
+import TeacherPage from "./Pages/TeacherPage/TeacherPage";
 
 const App = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -29,10 +30,10 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<ProjectPage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/StudentProfile" element={<StudentPage />} />
+          <Route path="/StudentProfile" element={<StudentPage></StudentPage>} />
+          <Route path="/TeacherProfile" element={<TeacherPage></TeacherPage>} />
           <Route path="/ProjectDetails" element={<ProjectDetails />} />
 
-          {/* <Route path="*" element={<ErrorPage />} /> */}
         </Routes>
         <Footer />
       </BrowserRouter>

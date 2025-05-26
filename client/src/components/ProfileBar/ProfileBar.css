@@ -1,0 +1,75 @@
+.profileBarContainer {
+  width: 100%;
+  height: 40vh;
+  background-color: rgb(255, 255, 255);
+  padding-left: 1%;
+  display: flex;
+  flex-direction: row;
+  font-family: "Poppins", sans-serif;
+  border-bottom: 5px solid black;
+}
+#imageProfileContainer {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+}
+#imageProfile {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  border: 3px solid black;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+#imageProfile:hover{
+    width: 96%;
+    height: 96%;
+}
+
+#profileInfoContainer {
+  width: 80%;
+  height: 100%;
+  padding-left: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+}
+#profileName {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+#infoProfile {
+  font-size: 1.8rem;
+  margin-bottom: 0.3em;
+  color: #06468f;
+}
+#updateInfo {
+  width: 160px;
+  height: 45px;
+  color: white;
+  background-color: rgb(30, 102, 211);
+  font-size: 20px;
+  border-radius: 20px;
+  border: none;
+}
+
+#updateInfo:hover {
+  background: linear-gradient(90deg, rgb(6, 23, 220),rgb(87, 216, 242), rgb(6, 74, 212));
+  background-size: 400% 400%;
+  animation: 3s gradient infinite;
+}
+@keyframes gradient{
+  0% {background-position: 0% 50% ;}
+  50% {background-position: 100% 50% ;}
+  100% {background-position: 0% 50% ;}
+} 
+
+#rol {
+  font-size: 1.3rem;
+  margin-bottom: 0.5em;
+}

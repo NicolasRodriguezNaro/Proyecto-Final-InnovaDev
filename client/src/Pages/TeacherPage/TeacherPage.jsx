@@ -1,17 +1,26 @@
 import React, { useState } from "react";
-import "./StudentPage.css";
-import PerfilBar from "../../components/ProfileBar/ProfileBar";
-import StudentProjects from "../../components/StudentProjects/StudentProjects";
+import "./TeacherPage.css";
+import ProfileBar from "../../components/ProfileBar/ProfileBar";
+import TeacherProjects from "../../components/TeacherProjects/TeacherProjects";
 
-const StudentPage = () => {
+const TeacherPage = () => {
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
 
-  // Aquí va tu función auxiliar
   const obtenerUltimaFecha = (proyecto) => {
-    if (!proyecto || !proyecto.avances || proyecto.avances.length === 0)
+    if (
+      !proyecto ||
+      !Array.isArray(proyecto.avances) ||
+      proyecto.avances.length === 0
+    ) {
       return "Sin avances";
+    }
 
-    const fechas = proyecto.avances.map((a) => new Date(a.fecha));
+    const fechas = proyecto.avances
+      .map((a) => new Date(a.fecha))
+      .filter((d) => !isNaN(d));
+
+    if (fechas.length === 0) return "Sin avances válidos";
+
     const ultimaFecha = new Date(Math.max(...fechas));
 
     return ultimaFecha.toLocaleDateString("es-ES", {
@@ -20,20 +29,22 @@ const StudentPage = () => {
       year: "numeric",
     });
   };
+
   return (
-    <div className="StudentPageContainer">
-      <PerfilBar />
-      <div id="projectsContainer">
-        <div id="studentContainerMain">
-          <div id="projectsList">
-            <StudentProjects onSelectProyecto={setProyectoSeleccionado} />
+    <div className="teacherPageContainer">
+      <ProfileBar />
+
+      <div id="teacherProjectsContainer">
+        <div id="teacherContainerMain">
+          <div id="teacherProjectsList">
+            <TeacherProjects onSelectProyecto={setProyectoSeleccionado} />
           </div>
 
-          <div id="detailsProjects">
+          <div id="teacherDetailsProjects">
             {proyectoSeleccionado ? (
               <>
                 <img
-                  id="imageDetailsProject"
+                  id="teacherImageDetailsProject"
                   src={
                     proyectoSeleccionado.imagen &&
                     typeof proyectoSeleccionado.imagen === "string" &&
@@ -44,44 +55,46 @@ const StudentPage = () => {
                   alt="Imagen del proyecto"
                 />
 
-                <h3 className="generalStyleText">
+                <h3 className="teacherGeneralStyleText">
                   {proyectoSeleccionado.titulo || "Sin título"}
                 </h3>
 
                 {/* Área */}
-                <h4 className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">
                   Área: {proyectoSeleccionado.area || "Sin área"}
                 </h4>
 
                 {/* Objetivos */}
-                <h4 className="generalStyleText">Objetivos</h4>
-                <p className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">Objetivos</h4>
+                <p className="teacherGeneralStyleText teacherDescriptionText">
                   {proyectoSeleccionado.objetivos || "Sin objetivos definidos"}
                 </p>
 
                 {/* Cronograma */}
-                <h4 className="generalStyleText">Cronograma</h4>
-                <p className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">Cronograma</h4>
+                <p className="teacherGeneralStyleText">
                   {proyectoSeleccionado.cronograma || "Sin cronograma definido"}
                 </p>
 
                 {/* Presupuesto */}
-                <h4 className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">
                   Presupuesto:{" "}
                   {proyectoSeleccionado.presupuesto || "Sin presupuesto"}
                 </h4>
 
                 {/* Institución */}
-                <h4 className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">
                   Institución:{" "}
                   {proyectoSeleccionado.institucion || "Sin institución"}
                 </h4>
 
                 {/* Integrantes */}
-                <h4 className="generalStyleText">Integrantes del equipo</h4>
+                <h4 className="teacherGeneralStyleText">
+                  Integrantes del equipo
+                </h4>
                 {Array.isArray(proyectoSeleccionado.integrantes) &&
                 proyectoSeleccionado.integrantes.length > 0 ? (
-                  <ul className="generalStyleText">
+                  <ul className="teacherGeneralStyleText">
                     {proyectoSeleccionado.integrantes.map((integrante, i) => (
                       <li key={i}>
                         {integrante.nombres || "N/A"}{" "}
@@ -92,25 +105,26 @@ const StudentPage = () => {
                     ))}
                   </ul>
                 ) : (
-                  <p className="generalStyleText">
+                  <p className="teacherGeneralStyleText">
                     Sin integrantes registrados
                   </p>
                 )}
 
                 {/* Observaciones */}
-                <h4 className="generalStyleText">Observaciones adicionales</h4>
-                <p className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">
+                  Observaciones adicionales
+                </h4>
+                <p className="teacherGeneralStyleText">
                   {proyectoSeleccionado.observaciones || "Sin observaciones"}
                 </p>
 
-                {/* Docente */}
-                <h4 className="generalStyleText">
+                {/* Datos que ya tenías */}
+                <h4 className="teacherGeneralStyleText">
                   Docente: {proyectoSeleccionado.docente || "Desconocido"}
                 </h4>
 
-                {/* Autores */}
-                <h4 className="generalStyleText">Autores</h4>
-                <ul className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">Autores</h4>
+                <ul className="teacherGeneralStyleText">
                   {Array.isArray(proyectoSeleccionado.autores) &&
                   proyectoSeleccionado.autores.length > 0 ? (
                     proyectoSeleccionado.autores.map((autor, i) => (
@@ -121,20 +135,18 @@ const StudentPage = () => {
                   )}
                 </ul>
 
-                {/* Estado */}
-                <h4 className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">
                   Estado: {proyectoSeleccionado.estado || "Sin estado"}
                 </h4>
 
-                {/* Fecha de modificación */}
-                <h4 className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">
                   Última modificación:{" "}
                   {obtenerUltimaFecha(proyectoSeleccionado)}
                 </h4>
 
                 {/* Descripción */}
-                <h4 className="generalStyleText">Descripción</h4>
-                <p className="generalStyleText">
+                <h4 className="teacherGeneralStyleText">Descripción</h4>
+                <p className="teacherGeneralStyleText">
                   {proyectoSeleccionado.descripcion ||
                     "Sin descripción disponible"}
                 </p>
@@ -142,11 +154,11 @@ const StudentPage = () => {
             ) : (
               <>
                 <img
-                  id="imageDetailsProject"
+                  id="teacherImageDetailsProject"
                   src="https://i.imgur.com/8Y1Ahmf.png"
                   alt="Sin proyecto"
                 />
-                <h3 className="generalStyleText">
+                <h3 className="teacherGeneralStyleText">
                   Selecciona un proyecto para ver los detalles
                 </h3>
               </>
@@ -158,4 +170,4 @@ const StudentPage = () => {
   );
 };
 
-export default StudentPage;
+export default TeacherPage;

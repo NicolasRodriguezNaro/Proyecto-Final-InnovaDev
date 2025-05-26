@@ -1,0 +1,124 @@
+.titulo {
+  padding: 15px;
+}
+
+.label-avances {
+  margin-bottom: 8px;
+}
+
+.label-subir {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.input-avance {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.acciones-avance {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.btn-enviar {
+  margin-left: 8px;
+}
+
+.scrollAdvances {
+  max-height: 200px;
+  min-height: 50px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding-right: 8px;
+  background-color: #fafafa;
+  display: block;
+}
+
+
+.formProfileBackGround {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.formProfileContent {
+  background-color: white;
+  padding: 24px;
+  border-radius: 10px;
+  width: 90%;
+  height: auto;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#relatedProject{
+  border: 1px solid black;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+#relatedProject:hover{
+  background-color: rgb(3, 72, 151);
+  color: rgb(255, 255, 255);
+}
+
+
+.file-list {
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease;
+}
+
+.file-item:hover {
+  background-color: #f0f0f0;
+}
+
+.file-name {
+  font-weight: 500;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 75%;
+}
+
+.delete-button {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c62828;
+}
+
