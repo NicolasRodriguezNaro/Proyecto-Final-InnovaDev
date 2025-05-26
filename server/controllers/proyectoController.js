@@ -39,6 +39,37 @@ export const obtenerProyectoPorId = async (req, res) => {
   }
 };
 
+
+//obtener todos los proyectos de un docente
+export const obtenerProyectosDelDocente = async (req, res) => {
+  try {
+    // Suponiendo que el ID del docente logeado está en req.usuario.id
+    const proyectos = await Proyecto.find({ docenteId: req.usuario.id })
+      .populate('docenteId', 'nombre correo'); // Opcional: para mostrar datos del docente
+
+    res.json(proyectos);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener los proyectos del docente' });
+  }
+};
+
+
+//obtener proyectos de un estudiante
+
+export const obtenerProyectosPorEstudiante = async (req, res) => {
+  try {
+    const { identificacion } = req.params;
+
+    // Busca proyectos donde algún integrante tenga esa identificación
+    const proyectos = await Proyecto.find({ "integrantes.identificacion": identificacion });
+
+    res.status(200).json(proyectos);
+  } catch (error) {
+    console.error('Error al obtener proyectos del estudiante:', error);
+    res.status(500).json({ message: 'Error del servidor al buscar proyectos.' });
+  }
+};
+
 // Editar proyecto
 export const editarProyecto = async (req, res) => {
   try {

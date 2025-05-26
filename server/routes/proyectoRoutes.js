@@ -7,7 +7,9 @@ import {
   eliminarProyecto,
   cambiarEstadoProyecto,
   buscarProyectos,
-  generarReportePDF
+  generarReportePDF,
+  obtenerProyectosDelDocente,
+  obtenerProyectosPorEstudiante
 } from '../controllers/proyectoController.js';
 
 import { verificarToken } from '../middleware/autenticacionMiddleware.js';
@@ -15,11 +17,13 @@ import { permitirRol } from '../middleware/rolesMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', verificarToken, permitirRol('docente'), crearProyecto);
-router.get('/', verificarToken, obtenerProyectos);
-router.get('/:id', verificarToken, obtenerProyectoPorId);
-router.put('/:id', verificarToken, editarProyecto);
-router.delete('/:id', verificarToken, eliminarProyecto);
+router.post('/crear', verificarToken, permitirRol('docente'), crearProyecto);
+router.get('/mostrarProyecto', obtenerProyectos);
+router.get('/mostrarPorDocente', verificarToken, obtenerProyectosDelDocente);
+router.get('/estudiante/:identificacion', obtenerProyectosPorEstudiante);
+router.get('/mostrarProyecto/:id', verificarToken, obtenerProyectoPorId);
+router.put('/editarProyecto/:id', verificarToken, editarProyecto);
+router.delete('/eliminarProyecto/:id', verificarToken, eliminarProyecto);
 
 // Solo el coordinador debería tener permiso real (filtro a nivel de frontend o middleware avanzado)
 router.put('/estado/:id', verificarToken, permitirRol('coordinador'), cambiarEstadoProyecto);

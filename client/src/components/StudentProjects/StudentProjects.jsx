@@ -15,101 +15,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DownloadIcon from "@mui/icons-material/Download";
 import "./StudentProjects.css";
 
-const mockProyectos = [
-  {
-    id: "p1",
-    titulo: "Energías Alternativas",
-    estado: "Activo",
-    avances: [
-      {
-        fecha: "2025-05-01",
-        descripcion: "Revisión bibliográfica sobre energías renovables.",
-        archivo: "investigacion_inicial.pdf",
-      },
-      {
-        fecha: "2025-05-15",
-        descripcion: "Primer prototipo de generador eólico.",
-        archivo: "prototipo_v1.pdf",
-      },
-    ],
-    imagen:
-      "https://www.giantfreakinrobot.com/wp-content/uploads/2021/11/gorillaz.jpeg",
-    docente: "Willian Patiño",
-    autores: ["Laura Gómez", "Carlos Méndez"],
-    descripcion:
-      "Investigación aplicada sobre el uso de energías alternativas como la solar y la eólica.",
-    area: "Ciencias Naturales",
-    objetivos: "Explorar el uso de energías limpias en zonas rurales.",
-    cronograma:
-      "Fase 1: Investigación (Abril 2025), Fase 2: Desarrollo (Mayo 2025)",
-    presupuesto: "$500.000",
-    institucion: "Colegio Ambiental S.A.",
-    observaciones: "Muy buen trabajo en equipo.",
-    integrantes: [
-      {
-        nombres: "Laura",
-        apellidos: "Gómez",
-        identificacion: "123456789",
-        grado: "11°",
-      },
-      {
-        nombres: "Carlos",
-        apellidos: "Méndez",
-        identificacion: "987654321",
-        grado: "11°",
-      },
-    ],
-  },
-  {
-    id: "p2",
-    titulo: "Reducción de Contaminación Plástica",
-    estado: "Finalizado",
-    avances: [
-      {
-        fecha: "2025-03-10",
-        descripcion: "Campaña de concientización en redes sociales.",
-        archivo: "campana_concientizacion.pdf",
-      },
-      {
-        fecha: "2025-04-01",
-        descripcion: "Informe final del proyecto con resultados obtenidos.",
-        archivo: "informe_final.pdf",
-      },
-    ],
-    imagen:
-      "https://muzikalia.com/wp-content/uploads/2010/12/gorillaz100-e1482394919804.jpg",
-    docente: "María Fernanda Ruiz",
-    autores: ["Nicolás Martínez", "Sergio Mosquera", "César Clavijo"],
-    descripcion:
-      "Proyecto que promueve la reducción del uso de plásticos de un solo uso en la comunidad escolar.",
-    area: "Educación Ambiental",
-    objetivos: "Reducir el uso de plásticos mediante campañas educativas.",
-    cronograma: "Marzo 2025 - Abril 2025",
-    presupuesto: "$300.000",
-    institucion: "Institución Educativa Central",
-    observaciones: "Resultados muy positivos, buena participación estudiantil.",
-    integrantes: [
-      {
-        nombres: "Nicolás",
-        apellidos: "Martínez",
-        identificacion: "234567891",
-        grado: "10°",
-      },
-      {
-        nombres: "Sergio",
-        apellidos: "Mosquera",
-        identificacion: "345678912",
-        grado: "10°",
-      },
-      {
-        nombres: "César",
-        apellidos: "Clavijo",
-        identificacion: "456789123",
-        grado: "10°",
-      },
-    ],
-  },
-];
+
 
 const StudentProjects = ({ onSelectProyecto = () => {} }) => {
   const [proyectos, setProyectos] = useState([]);
@@ -122,9 +28,43 @@ const StudentProjects = ({ onSelectProyecto = () => {} }) => {
   const inputImagenRef = useRef(null);
   const inputDocumentoRef = useRef(null);
 
-  useEffect(() => {
-    setProyectos(mockProyectos);
-  }, []);
+useEffect(() => {
+  const usuarioGuardado = localStorage.getItem("usuario");
+
+  if (!usuarioGuardado) {
+    console.error("No hay usuario en localStorage");
+    return;
+  }
+
+  let usuario;
+
+  try {
+    usuario = JSON.parse(usuarioGuardado);
+  } catch (error) {
+    console.error("Error al parsear usuario:", error);
+    return;
+  }
+
+  if (!usuario?.identificacion) {
+    console.error("El usuario no tiene una identificación válida");
+    return;
+  }
+
+  const fetchProyectos = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/proyectos/estudiante/${usuario.identificacion}`
+      );
+      const data = await response.json();
+      setProyectos(data);
+    } catch (error) {
+      console.error("Error al obtener proyectos:", error);
+    }
+  };
+
+  fetchProyectos();
+}, []);
+
 
   const handleDownload = (archivo) => {
     alert(`Simulando descarga del archivo: ${archivo}`);
@@ -145,7 +85,7 @@ const StudentProjects = ({ onSelectProyecto = () => {} }) => {
   };
 
   const abrirSelectorDocumentos = () => {
-    inputImagenRef.current.click();
+    inputDocumentoRef.current.click();
   };
 
   const eliminarImagen = (index) => {
@@ -160,43 +100,55 @@ const StudentProjects = ({ onSelectProyecto = () => {} }) => {
     setDocumentos(nuevos);
   };
 
-  const handleGuardarAvance = () => {
-    const nuevoAvance = {
-      fecha: new Date().toISOString().split("T")[0],
-      descripcion: descripcionAvance.trim() || "Sin descripción",
-      archivo: documentos[0]?.name || "archivo.pdf",
-    };
+  const handleGuardarAvance = async () => {
+    const formData = new FormData();
+    formData.append("proyectoId", modalProyecto);
+    formData.append("descripcion", descripcionAvance.trim() || "Sin descripción");
 
-    const nuevosProyectos = proyectos.map((p) => {
-      if (p.id === modalProyecto) {
-        const actualizado = {
-          ...p,
-          avances: [...p.avances, nuevoAvance],
-          imagen: imagenesExtras[0]
-            ? URL.createObjectURL(imagenesExtras[0])
-            : p.imagen,
-          descripcion: descripcionGeneral.trim() || p.descripcion,
-        };
-
-        try {
-          onSelectProyecto(actualizado);
-        } catch (err) {
-          console.error("Error en onSelectProyecto:", err);
-        }
-
-        return actualizado;
-      }
-      return p;
+    documentos.forEach((doc, index) => {
+      formData.append("documentos", doc);  // múltiples archivos
     });
 
-    setProyectos(nuevosProyectos);
-    setModalProyecto(null);
-    setDescripcionAvance("");
-    setDescripcionGeneral("");
-    setImagenesExtras([]);
-    setDocumentos([]);
-    if (inputImagenRef.current) inputImagenRef.current.value = null;
-    if (inputDocumentoRef.current) inputDocumentoRef.current.value = null;
+    imagenesExtras.forEach((img, index) => {
+      formData.append("fotos", img);  // múltiples archivos
+    });
+
+    try {
+      const token = localStorage.getItem("token"); // si usas JWT
+      const response = await fetch("http://localhost:5000/api/avances", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // si usas autenticación con token
+          // No pongas Content-Type, fetch lo maneja al usar FormData
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("Error al guardar avance:", error);
+        alert("Error al guardar el avance");
+        return;
+      }
+
+      const nuevoAvance = await response.json();
+      console.log("Avance guardado:", nuevoAvance);
+      alert("Avance guardado correctamente");
+
+      // Limpieza de formularios
+      setModalProyecto(null);
+      setDescripcionAvance("");
+      setDescripcionGeneral("");
+      setImagenesExtras([]);
+      setDocumentos([]);
+      if (inputImagenRef.current) inputImagenRef.current.value = null;
+      if (inputDocumentoRef.current) inputDocumentoRef.current.value = null;
+
+      // Opcional: recargar proyectos o actualizar el estado local si ya tienes `avances`
+    } catch (err) {
+      console.error("Error al enviar avance:", err);
+      alert("Ocurrió un error al enviar el avance.");
+    }
   };
 
   return (
@@ -221,7 +173,7 @@ const StudentProjects = ({ onSelectProyecto = () => {} }) => {
               Avances:
             </Typography>
             <List className="scrollAdvances">
-              {proyecto.avances.length === 0 ? (
+              {!proyecto.avances || proyecto.avances.length === 0 ? (
                 <ListItem>
                   <ListItemText primary="Sin avances aún" />
                 </ListItem>

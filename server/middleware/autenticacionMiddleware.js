@@ -6,6 +6,7 @@ export const verificarToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+    console.log("Token decodificado:", decoded);
     req.usuario = decoded;
     next();
   } catch (err) {

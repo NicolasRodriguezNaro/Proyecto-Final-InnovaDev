@@ -16,96 +16,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./TeacherProjects.css";
 
-const mockProyectos = [
-  {
-    id: "p1",
-    titulo: "Energías Alternativas",
-    estado: "Activo",
-    avances: [
-      {
-        fecha: "2025-05-01",
-        descripcion: "Revisión bibliográfica sobre energías renovables.",
-        archivo: "investigacion_inicial.pdf",
-      },
-      {
-        fecha: "2025-05-15",
-        descripcion: "Primer prototipo de generador eólico.",
-        archivo: "prototipo_v1.pdf",
-      },
-    ],
-    imagen: "https://www.giantfreakinrobot.com/wp-content/uploads/2021/11/gorillaz.jpeg",
-    docente: "Willian Patiño",
-    autores: ["Laura Gómez", "Carlos Méndez"],
-    descripcion: "Investigación aplicada sobre el uso de energías alternativas como la solar y la eólica.",
-    area: "Ciencias Naturales",
-    objetivos: "Explorar el uso de energías limpias en zonas rurales.",
-    cronograma: "Fase 1: Investigación (Abril 2025), Fase 2: Desarrollo (Mayo 2025)",
-    presupuesto: "$500.000",
-    institucion: "Colegio Ambiental S.A.",
-    observaciones: "Muy buen trabajo en equipo.",
-    integrantes: [
-      {
-        nombres: "Laura",
-        apellidos: "Gómez",
-        identificacion: "123456789",
-        grado: "11°",
-      },
-      {
-        nombres: "Carlos",
-        apellidos: "Méndez",
-        identificacion: "987654321",
-        grado: "11°",
-      },
-    ],
-  },
-  {
-    id: "p2",
-    titulo: "Reducción de Contaminación Plástica",
-    estado: "Finalizado",
-    avances: [
-      {
-        fecha: "2025-03-10",
-        descripcion: "Campaña de concientización en redes sociales.",
-        archivo: "campana_concientizacion.pdf",
-      },
-      {
-        fecha: "2025-04-01",
-        descripcion: "Informe final del proyecto con resultados obtenidos.",
-        archivo: "informe_final.pdf",
-      },
-    ],
-    imagen: "https://muzikalia.com/wp-content/uploads/2010/12/gorillaz100-e1482394919804.jpg",
-    docente: "María Fernanda Ruiz",
-    autores: ["Nicolás Martínez", "Sergio Mosquera", "César Clavijo"],
-    descripcion: "Proyecto que promueve la reducción del uso de plásticos de un solo uso en la comunidad escolar.",
-    area: "Educación Ambiental",
-    objetivos: "Reducir el uso de plásticos mediante campañas educativas.",
-    cronograma: "Marzo 2025 - Abril 2025",
-    presupuesto: "$300.000",
-    institucion: "Institución Educativa Central",
-    observaciones: "Resultados muy positivos, buena participación estudiantil.",
-    integrantes: [
-      {
-        nombres: "Nicolás",
-        apellidos: "Martínez",
-        identificacion: "234567891",
-        grado: "10°",
-      },
-      {
-        nombres: "Sergio",
-        apellidos: "Mosquera",
-        identificacion: "345678912",
-        grado: "10°",
-      },
-      {
-        nombres: "César",
-        apellidos: "Clavijo",
-        identificacion: "456789123",
-        grado: "10°",
-      },
-    ],
-  },
-];
 
 const TeacherProjects = ({ onSelectProyecto }) => {
   const [proyectos, setProyectos] = useState([]);
@@ -129,8 +39,117 @@ const TeacherProjects = ({ onSelectProyecto }) => {
     ],
   });
 
+
+  
+
+const handleGuardarProyecto = async () => {
+  const usuarioActual = localStorage.getItem("usuario");
+  const token = localStorage.getItem("token");
+
+  if (!usuarioActual || !token) {
+    alert("No se encontró información de usuario o token. Por favor, inicia sesión nuevamente.");
+    return;
+  }
+
+  try {
+    const usuario = JSON.parse(usuarioActual);
+    
+    // Usar identificación como ID temporal hasta arreglar el login
+    const userId = usuario.id || usuario._id || usuario.identificacion;
+    if (!userId) {
+      alert("Error: No se encontró un identificador para el usuario");
+      return;
+    }
+    
+
+    // Mapear integrantes para que coincidan con el schema del backend
+    const integrantesMapeados = nuevoProyecto.integrantes.map(integrante => ({
+      nombres: integrante.nombres,
+      apellidos: integrante.apellidos,
+      identificacion: integrante.identificacion,
+      grado_escolar: integrante.grado // ← Cambiar 'grado' por 'grado_escolar'
+    }));
+
+    const proyectoConDocente = {
+      ...nuevoProyecto,
+      integrantes: integrantesMapeados
+    };
+
+
+    const response = await fetch("http://localhost:5000/api/proyectos/crear", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(proyectoConDocente),
+    });
+
+    // Manejar respuestas de error detalladamente
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error del servidor:", errorData);
+      throw new Error(errorData.mensaje || `Error ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("Proyecto guardado exitosamente:", data);
+
+    // Actualizar estado y limpiar formulario
+   // setProyectos([...proyectos, { ...data, avances: data.avances || [] }]);
+    setProyectos(prev => [...prev, { ...data, avances: data.avances || [] }]);
+    setModalProyecto(null);
+    setNuevoProyecto({
+      titulo: "",
+      area: "",
+      objetivos: "",
+      cronograma: "",
+      presupuesto: "",
+      institucion: "",
+      observaciones: "",
+      integrantes: [
+        { nombres: "", apellidos: "", identificacion: "", grado: "" },
+      ],
+    });
+
+    alert("Proyecto guardado exitosamente");
+
+  } catch (error) {
+    console.error("Error completo:", error);
+    alert(`Error al guardar el proyecto: ${error.message}`);
+  }
+};
+
+  const fetchProyectosDocente = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Token no encontrado. Por favor, inicia sesión.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/proyectos/mostrarPorDocente", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.mensaje || "Error al obtener los proyectos");
+      }
+
+      const proyectos = await response.json();
+      setProyectos(proyectos);
+    } catch (error) {
+      console.error("Error al obtener proyectos:", error);
+      alert(error.message);
+    }
+  };
+
   useEffect(() => {
-    setProyectos(mockProyectos);
+     fetchProyectosDocente();
   }, []);
 
   const handleDownload = (archivo) => {
@@ -173,7 +192,7 @@ const TeacherProjects = ({ onSelectProyecto }) => {
               Avances:
             </Typography>
             <List className="scrollAdvances">
-              {proyecto.avances.length === 0 ? (
+              {!(proyecto.avances?.length > 0 ) ? (
                 <ListItem>
                   <ListItemText primary="Sin avances aún" />
                 </ListItem>
@@ -408,67 +427,11 @@ const TeacherProjects = ({ onSelectProyecto }) => {
                   }
                 />
 
-                <TextField
-                  label="Descripción"
-                  fullWidth
-                  margin="normal"
-                  multiline
-                  rows={3}
-                  value={nuevoProyecto.descripcion || ""}
-                  onChange={(e) =>
-                    setNuevoProyecto({
-                      ...nuevoProyecto,
-                      descripcion: e.target.value,
-                    })
-                  }
-                />
-
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => {
-                    // Mapear integrantes a autores (nombre completo)
-                    const autores = nuevoProyecto.integrantes.map((i) =>
-                      `${i.nombres} ${i.apellidos}`.trim()
-                    );
-
-                    const nuevo = {
-                      id: `p${Date.now()}`,
-                      titulo: nuevoProyecto.titulo,
-                      area: nuevoProyecto.area,
-                      objetivos: nuevoProyecto.objetivos,
-                      cronograma: nuevoProyecto.cronograma,
-                      presupuesto: nuevoProyecto.presupuesto,
-                      institucion: nuevoProyecto.institucion,
-                      observaciones: nuevoProyecto.observaciones,
-                      autores,
-                      estado: "Activo",
-                      avances: [],
-                      imagen: "",
-                      docente: "",
-                      descripcion: nuevoProyecto.descripcion || "",
-                    };
-
-                    setProyectos([...proyectos, nuevo]);
-                    setModalProyecto(null);
-                    setNuevoProyecto({
-                      titulo: "",
-                      area: "",
-                      objetivos: "",
-                      cronograma: "",
-                      presupuesto: "",
-                      institucion: "",
-                      observaciones: "",
-                      integrantes: [
-                        {
-                          nombres: "",
-                          apellidos: "",
-                          identificacion: "",
-                          grado: "",
-                        },
-                      ],
-                    });
-                  }}
+                  fullWidth
+                  onClick={handleGuardarProyecto}
                 >
                   Guardar Proyecto
                 </Button>
