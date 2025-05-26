@@ -17,7 +17,6 @@ const ProfileBar = () => {
         <p id="rol">
           <strong>Rol:</strong> Estudiante
         </p>
-        <button id="updateInfo">Editar Perfil</button>
       </div>
     </div>
   );

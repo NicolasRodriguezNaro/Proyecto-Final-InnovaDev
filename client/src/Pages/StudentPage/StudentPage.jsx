@@ -6,7 +6,6 @@ import StudentProjects from "../../components/StudentProjects/StudentProjects";
 const StudentPage = () => {
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
 
-  // Aquí va tu función auxiliar
   const obtenerUltimaFecha = (proyecto) => {
     if (!proyecto || !proyecto.avances || proyecto.avances.length === 0)
       return "Sin avances";

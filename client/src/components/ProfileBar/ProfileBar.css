@@ -48,26 +48,6 @@
   margin-bottom: 0.3em;
   color: #06468f;
 }
-#updateInfo {
-  width: 160px;
-  height: 45px;
-  color: white;
-  background-color: rgb(30, 102, 211);
-  font-size: 20px;
-  border-radius: 20px;
-  border: none;
-}
-
-#updateInfo:hover {
-  background: linear-gradient(90deg, rgb(6, 23, 220),rgb(87, 216, 242), rgb(6, 74, 212));
-  background-size: 400% 400%;
-  animation: 3s gradient infinite;
-}
-@keyframes gradient{
-  0% {background-position: 0% 50% ;}
-  50% {background-position: 100% 50% ;}
-  100% {background-position: 0% 50% ;}
-} 
 
 #rol {
   font-size: 1.3rem;
